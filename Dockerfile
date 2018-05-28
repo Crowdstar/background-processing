@@ -17,4 +17,4 @@ RUN \
 
 COPY . /var/www/html
 
-RUN composer update
+RUN composer update --no-dev -n

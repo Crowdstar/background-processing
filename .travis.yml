@@ -11,7 +11,8 @@ services:
 before_install:
   - docker-compose up -d
   - docker ps -a
+  - composer update -n
 
-# script:
-#   - ./vendor/bin/phpcs -v --standard=PSR2 src tests/CrowdStar
-#   - ./vendor/bin/phpunit --exclude-group dockerized
+script:
+  - ./vendor/bin/phpcs -v --standard=PSR2 src tests/CrowdStar
+  - ./vendor/bin/phpunit
