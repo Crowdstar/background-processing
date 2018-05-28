@@ -5,11 +5,13 @@ php:
   - 7.1
   - 7.0
 
-sudo: false
+services:
+  - docker
 
-install:
-  - composer install -n
+before_install:
+  - docker-compose up -d
+  - docker ps -a
 
-script:
-  - ./vendor/bin/phpcs -v --standard=PSR2 src tests/CrowdStar
-  - ./vendor/bin/phpunit --exclude-group dockerized
+# script:
+#   - ./vendor/bin/phpcs -v --standard=PSR2 src tests/CrowdStar
+#   - ./vendor/bin/phpunit --exclude-group dockerized
