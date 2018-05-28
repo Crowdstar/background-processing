@@ -1,0 +1,15 @@
+language: php
+
+php:
+  - 7.2
+  - 7.1
+  - 7.0
+
+sudo: false
+
+install:
+  - composer install -n
+
+script:
+  - ./vendor/bin/phpcs -v --standard=PSR2 src tests/CrowdStar
+  - ./vendor/bin/phpunit --exclude-group dockerized
