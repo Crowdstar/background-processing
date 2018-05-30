@@ -12,3 +12,7 @@ services:
             - php
     php:
         build: .
+        volumes:
+            # The container works fine without this volume. However, adding this volume allows us to update the PHP
+            # script for testing purpose while the Docker instances are running.
+            - ./index.php:/var/www/html/index.php
