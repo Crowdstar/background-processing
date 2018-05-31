@@ -3,7 +3,7 @@
   "description": "To continue processing PHP after having HTTP response sent back to the client under PHP-FPM.",
   "homepage": "https://www.glu.com",
   "type": "project",
-  "license": "Commercial",
+  "license": "proprietary",
   "require": {
     "php": ">=7.0"
   },
