@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/Crowdstar/background-processing.svg?branch=master)](https://travis-ci.org/Crowdstar/background-processing)
 
-This package allows to continue processing PHP after having HTTP response sent back to the client under PHP-FPM.
+This package allows continuing processing PHP after having HTTP response sent back to the client under PHP-FPM.
 
 PHP functions added by this package are executed after HTTP response sent back to the client but before PHP shutdown (
 before any registered shutdown function is called).
@@ -11,12 +11,15 @@ This package is for PHP-FPM only. Don't try to run it under CLI, PHP built-in we
 won't work.
 
 After sending HTTP response back to client side, background functions added continue to run and the PHP-FPM process is
-still running. To avoid side effects on your web server, please use this package accordingly. You may consider to use
+still running. To avoid side effects on your web server, please use this package accordingly. You may consider using
 some worker instances or queue servers instead. When using this package, you may consider following suggestions to
 minimize side effects:
 
-* increase child processes in PHP-FPM.
+* increase number of child processes in PHP-FPM.
 * increase maximum execution time for PHP-FPM.
+
+When using locks, please note that subsequent requests might block even client side has received a response from a
+previous request, since a lock may still be active while running background tasks in the previous request.
 
 # Installation
 
@@ -37,7 +40,7 @@ $file = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'background-processing.txt';
 
 // First background task added.
 BackgroundProcessing::add(
-// increase variable $sum by the sum of given numbers. In this example, final value of $sum will be 7 (1+2+4).
+// Increase $sum by the sum of given numbers. Final value of $sum is this example is 7 (1+2+4).
     function (int ...$params) use (&$sum) {
         $sum += array_sum($params);
     },
@@ -54,7 +57,9 @@ BackgroundProcessing::add(
 );
 
 // Number 0 will be returned back to HTTP client.
-echo "Current sum value is {$sum}. Please check file {$file} in the web server; final sum value there should be 7.\n";
+echo
+    "Current sum value is {$sum}. ",
+    "Please check file {$file} in the web server; final sum value there should be 7.\n";
 
 // Send HTTP response back to the client first, then run the two background tasks added.
 BackgroundProcessing::run();
