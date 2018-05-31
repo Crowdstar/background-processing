@@ -10,10 +10,6 @@ before any registered shutdown function is called).
 This package is for PHP-FPM only. Don't try to run it under CLI, PHP built-in web server, mod_php or FastCGI since it
 won't work.
 
-This package doesn't end PHP session before running background tasks. Because of this, it could affect HTTP requests that
- use same session. Thus, this package should be used only for PHP applications where session is not used, e.g., stateless
- micro-services.
-
 After sending HTTP response back to client side, background functions added continue to run and the PHP-FPM process is
 still running. To avoid side effects on your web server, please use this package accordingly. You may consider to use
 some worker instances or queue servers instead. When using this package, you may consider following suggestions to
