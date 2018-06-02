@@ -27,9 +27,7 @@ previous request, since a lock may still be active while running background task
 composer require crowdstar/background-processing:@dev
 ```
 
-# Examples
-
-## 
+# Sample Usage
 
 ```php
 <?php
@@ -66,5 +64,114 @@ BackgroundProcessing::run();
 
 // Anything here also runs in background.
 echo "This message won't shown up in HTTP response.";
+?>
+```
+
+# Integration Guides
+
+## Integrate with Symfony
+
+```php
+<?php
+// Sample code borrowed from https://github.com/symfony/demo/blob/v1.2.4/public/index.php
+use App\Kernel;
+use Symfony\Component\HttpFoundation\Request;
+
+require __DIR__.'/../vendor/autoload.php';
+
+$kernel = new Kernel($env, $debug);
+$request = Request::createFromGlobals();
+$response = $kernel->handle($request);
+$response->send();
+$kernel->terminate($request, $response);
+
+// Method BackgroundProcessing::add() could be called from a bundle, a controller or
+// anywhere before method BackgroundProcessing::run() is called.
+CrowdStar\BackgroundProcessing\BackgroundProcessing::add(
+    function() {
+        mail('user@example.com', 'test', 'test');
+    }
+);
+CrowdStar\BackgroundProcessing\BackgroundProcessing::run();
+?>
+```
+
+## Integrate with Laravel
+
+```php
+<?php
+// Sample code borrowed from https://github.com/laravel/laravel/blob/5.5/public/index.php
+define('LARAVEL_START', microtime(true));
+
+require __DIR__.'/../vendor/autoload.php';
+
+$app = require_once __DIR__.'/../bootstrap/app.php';
+
+$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+$response = $kernel->handle(
+    $request = Illuminate\Http\Request::capture()
+);
+$response->send();
+$kernel->terminate($request, $response);
+
+// Method BackgroundProcessing::add() could be called from a controller, a middleware or
+// anywhere before method BackgroundProcessing::run() is called.
+CrowdStar\BackgroundProcessing\BackgroundProcessing::add(
+    function() {
+        mail('user@example.com', 'test', 'test');
+    }
+);
+CrowdStar\BackgroundProcessing\BackgroundProcessing::run();
+?>
+```
+
+## Integrate with Lumen
+
+```php
+<?php
+// Sample code borrowed from https://github.com/laravel/lumen/blob/5.5/public/index.php
+$app = require __DIR__ . '/../bootstrap/app.php';
+$app->run();
+
+// Method BackgroundProcessing::add() could be called from a controller, a middleware or
+// anywhere before method BackgroundProcessing::run() is called.
+CrowdStar\BackgroundProcessing\BackgroundProcessing::add(
+    function() {
+        mail('user@example.com', 'test', 'test');
+    }
+);
+CrowdStar\BackgroundProcessing\BackgroundProcessing::run();
+?>
+```
+
+## Integrate with Slim 3
+
+```php
+<?php
+// Sample code borrowed from https://github.com/slimphp/Slim/blob/3.x/example/index.php
+require 'vendor/autoload.php';
+
+$app = new Slim\App();
+
+$app->get('/', function ($request, $response, $args) {
+    $response->write("Welcome to Slim!");
+    return $response;
+});
+
+$app->get('/hello[/{name}]', function ($request, $response, $args) {
+    $response->write("Hello, " . $args['name']);
+    return $response;
+})->setArgument('name', 'World!');
+
+$app->run();
+
+// Method BackgroundProcessing::add() can be called from a route, a middleware or
+// anywhere before method BackgroundProcessing::run() is called.
+CrowdStar\BackgroundProcessing\BackgroundProcessing::add(
+    function() {
+        mail('user@example.com', 'test', 'test');
+    }
+);
+CrowdStar\BackgroundProcessing\BackgroundProcessing::run();
 ?>
 ```
