@@ -7,6 +7,9 @@
 # Ignore files under Mac
 .DS_Store
 
+# Ignore file phpunit.xml
+/phpunit.xml
+
 # Ignore Composer files
 /composer.lock
 /composer.phar
