@@ -1,4 +1,7 @@
 [![Build Status](https://travis-ci.org/Crowdstar/background-processing.svg?branch=master)](https://travis-ci.org/Crowdstar/background-processing)
+[![Latest Stable Version](https://poser.pugx.org/Crowdstar/background-processing/v/stable.svg)](https://packagist.org/packages/crowdstar/background-processing)
+[![Latest Unstable Version](https://poser.pugx.org/Crowdstar/background-processing/v/unstable.svg)](https://packagist.org/packages/crowdstar/background-processing)
+[![License](https://poser.pugx.org/Crowdstar/background-processing/license.svg)](https://packagist.org/packages/crowdstar/background-processing)
 
 This package allows continuing processing PHP after having HTTP response sent back to the client under PHP-FPM.
 
