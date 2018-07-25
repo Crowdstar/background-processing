@@ -6,7 +6,8 @@
 This package allows continuing processing PHP after having HTTP response sent back to the client under PHP-FPM.
 
 PHP functions added by this package are executed after HTTP response sent back to the client but before PHP shutdown (
-before any registered shutdown function is called).
+before any registered shutdown function is called). For detailed discussions on PHP shutdown sequence, function
+_fastcgi_finish_request()_ and related topics, please check the post "[Background Processing in PHP](https://github.com/deminy/background-processing-in-php)".
 
 # Limitations and Side Effects
 
