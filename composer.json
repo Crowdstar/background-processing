@@ -2,7 +2,7 @@
   "name": "crowdstar/background-processing",
   "description": "To continue processing PHP after having HTTP response sent back to the client under PHP-FPM.",
   "homepage": "https://www.glu.com",
-  "license": "proprietary",
+  "license": "Apache-2.0",
   "require": {
     "php": ">=7.0"
   },
