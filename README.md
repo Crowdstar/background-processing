@@ -28,7 +28,7 @@ previous request, since a lock may still be active while running background task
 # Installation
 
 ```bash
-composer require crowdstar/background-processing:~0.0.1
+composer require crowdstar/background-processing:~1.0.0
 ```
 
 # Sample Usage
