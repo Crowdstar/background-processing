@@ -1,6 +1,7 @@
 language: php
 
 php:
+  - 7.3
   - 7.2
   - 7.1
   - 7.0
@@ -9,6 +10,7 @@ services:
   - docker
 
 before_install:
+  - sed "s/%%PHP_VERSION%%/$(phpenv version-name)/g" Dockerfile.tpl > Dockerfile
   - docker-compose up -d
   - docker ps -a
   - composer update -n

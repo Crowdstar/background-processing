@@ -7,6 +7,9 @@
 # Ignore files under Mac
 .DS_Store
 
+# Ignore generated Docker files
+/Dockerfile
+
 # Ignore file phpunit.xml
 /phpunit.xml
 
