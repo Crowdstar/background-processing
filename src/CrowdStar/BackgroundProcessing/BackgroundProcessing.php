@@ -18,6 +18,7 @@
 namespace CrowdStar\BackgroundProcessing;
 
 use Closure;
+use CrowdStar\BackgroundProcessing\Timer\AbstractTimer;
 
 /**
  * Class BackgroundProcessing
@@ -27,9 +28,14 @@ use Closure;
 class BackgroundProcessing
 {
     /**
-     * @var array
+     * @var Closure[]
      */
     protected static $closures = [];
+
+    /**
+     * @var AbstractTimer[]
+     */
+    protected static $timers = [];
 
     /**
      * @var bool
@@ -37,10 +43,11 @@ class BackgroundProcessing
     protected static $invoked = false;
 
     /**
+     * @param bool $stopTiming Stop timing the current transaction or not before starting processing tasks in background
      * @return void
      * @throws Exception
      */
-    public static function run()
+    public static function run(bool $stopTiming = false)
     {
         if (self::isInvoked()) {
             throw new Exception('background process invoked already');
@@ -52,6 +59,13 @@ class BackgroundProcessing
         }
         session_write_close();
         fastcgi_finish_request();
+
+        if ($stopTiming) {
+            // Stop timing the current transaction before starting processing tasks in background.
+            foreach (self::$timers as $timer) {
+                $timer->stopTiming();
+            }
+        }
 
         foreach (self::$closures as $closure) {
             $closure();
@@ -80,6 +94,14 @@ class BackgroundProcessing
         self::$closures[] = function () use ($op, $params) {
             return $op(...$params);
         };
+    }
+
+    /**
+     * @param AbstractTimer $timer
+     */
+    public static function addTimer(AbstractTimer $timer)
+    {
+        self::$timers[] = $timer;
     }
 
     /**
