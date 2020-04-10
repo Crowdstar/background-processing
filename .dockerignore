@@ -1,0 +1,24 @@
+# Ignore PhpStorm files
+/.idea/
+
+# Ignore Visual Studio Code files
+/.vscode/
+
+# Ignore files under Mac
+.DS_Store
+
+# Ignore Docker files
+/Dockerfile
+/Dockerfile.tpl
+
+# Ignore phpunit.xml files
+/phpunit.xml
+/phpunit.xml.dist
+
+# Ignore Composer files
+/composer.lock
+/composer.phar
+/vendor/
+
+# Ignore tests
+/tests/
