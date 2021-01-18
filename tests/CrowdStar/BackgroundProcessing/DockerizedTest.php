@@ -76,7 +76,7 @@ class DockerizedTest extends TestCase
      */
     public function testRun(string $expectedHttpResponse, string $expectedFinalValue, string $start, string $end)
     {
-        $client = new Client(['base_uri' => 'http://127.0.0.1']);
+        $client = new Client(['base_uri' => 'http://web']);
         $client->get('/', ['query' => ['reset' => true]]); // Wipe cached data.
 
         $this->assertSame(
