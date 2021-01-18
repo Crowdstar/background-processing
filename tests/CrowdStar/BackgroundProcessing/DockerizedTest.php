@@ -31,9 +31,6 @@ use PHPUnit\Framework\TestCase;
  */
 class DockerizedTest extends TestCase
 {
-    /**
-     * @return array
-     */
     public function dataRun(): array
     {
         return [
@@ -71,12 +68,8 @@ class DockerizedTest extends TestCase
     /**
      * @dataProvider dataRun
      * @covers BackgroundProcessing::run()
-     * @param string $expectedHttpResponse
-     * @param string $expectedFinalValue
-     * @param string $start
-     * @param string $end
      */
-    public function testRun(string $expectedHttpResponse, string $expectedFinalValue, string $start, string $end)
+    public function testRun(string $expectedHttpResponse, string $expectedFinalValue, string $start, string $end): void
     {
         $client = new Client(['base_uri' => 'http://web']);
         $client->get('/', ['query' => ['reset' => true]]); // Wipe cached data.

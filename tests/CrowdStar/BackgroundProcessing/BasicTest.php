@@ -20,6 +20,7 @@ declare(strict_types=1);
 namespace CrowdStar\Tests\BackgroundProcessing;
 
 use CrowdStar\BackgroundProcessing\BackgroundProcessing;
+use CrowdStar\BackgroundProcessing\Exception;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -37,7 +38,7 @@ class BasicTest extends TestCase
     /**
      * @inheritdoc
      */
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         self::$counter = 0;
         BackgroundProcessing::reset();
@@ -47,16 +48,13 @@ class BasicTest extends TestCase
     /**
      * @inheritdoc
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         self::$counter = 0;
         BackgroundProcessing::reset();
     }
 
-    /**
-     * @return array
-     */
     public function dataRun(): array
     {
         $closure = function (int ...$params) {
@@ -101,12 +99,9 @@ class BasicTest extends TestCase
     /**
      * @dataProvider dataRun
      * @covers BackgroundProcessing::run()
-     * @param int $expected
-     * @param array $closures
-     * @param string $message
      * @throws \CrowdStar\BackgroundProcessing\Exception
      */
-    public function testRun(int $expected, array $closures, string $message)
+    public function testRun(int $expected, array $closures, string $message): void
     {
         foreach ($closures as $closure) {
             BackgroundProcessing::add(...$closure);
@@ -117,11 +112,12 @@ class BasicTest extends TestCase
 
     /**
      * @covers BackgroundProcessing::run()
-     * @expectedException \CrowdStar\BackgroundProcessing\Exception
-     * @expectedExceptionMessage background process invoked already
      */
-    public function testRunWhenInvokedAlready()
+    public function testRunWhenInvokedAlready(): void
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('background process invoked already');
+
         BackgroundProcessing::run();
         BackgroundProcessing::run();
     }
