@@ -3,8 +3,6 @@ version: '3'
 services:
     web:
         image: nginx:mainline
-        ports:
-            - "80:80"
         volumes:
             - ./default.conf:/etc/nginx/conf.d/default.conf
             - .:/var/www/html
@@ -16,3 +14,5 @@ services:
             # The container works fine without this volume. However, adding this volume allows us to update the PHP
             # script for testing purpose while the Docker instances are running.
             - ./index.php:/var/www/html/index.php
+            - ./src:/var/www/html/src
+            - ./tests:/var/www/html/tests

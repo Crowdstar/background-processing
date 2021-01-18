@@ -1,22 +1,14 @@
 FROM php:%%PHP_VERSION%%-fpm
 
-RUN \
-    apt-get update                && \
-    apt-get install -y               \
-        zlib1g-dev                   \
-        libzip-dev                && \
-    docker-php-ext-install zip    && \
-    yes '' | pecl install apcu    && \
-    docker-php-ext-enable apcu    && \
-    curl                     \
-        -sf                  \
-        --connect-timeout 5  \
-        --max-time        15 \
-        --retry           5  \
-        --retry-delay     2  \
-        --retry-max-time  60 \
-        http://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
-
 COPY . /var/www/html
 
-RUN composer update -n
+RUN \
+    apt-get update     && \
+    apt-get install -y    \
+        zlib1g-dev        \
+        libzip-dev     && \
+    docker-php-ext-install zip && \
+    yes '' | pecl install apcu && \
+    docker-php-ext-enable apcu && \
+    curl -sfL http://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && \
+    composer update -nq --no-progress
