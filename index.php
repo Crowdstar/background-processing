@@ -8,19 +8,13 @@
  *
  * Examples:
  *     # Wipe cached data.
- *     curl -i "http://127.0.0.1/?reset"
- *     or
- *     docker exec -t $(docker ps -qf "name=php") bash -c "curl -i http://web/?reset" # When running Docker containers
+ *     docker exec -t $(docker ps -qf "name=php") bash -c "curl -i -w \"\n\" http://web/?reset"
  *
  *     # Store variable $start in cache and return it back to HTTP client, then store variable $end to cache.
- *     curl -i "http://127.0.0.1/?start=1&end=2"
- *     or
- *     docker exec -t $(docker ps -qf "name=php") bash -c "curl -i 'http://web?start=1&end=2'" # When running Docker containers
+ *     docker exec -t $(docker ps -qf "name=php") bash -c "curl -i -w \"\n\" \"http://web?start=1&end=2\""
  *
  *     # Print out cached data.
- *     curl -i "http://127.0.0.1/"
- *     or
- *     docker exec -t $(docker ps -qf "name=php") bash -c "curl -i http://web" # When running Docker containers
+ *     docker exec -t $(docker ps -qf "name=php") bash -c "curl -i -w \"\n\" http://web"
  */
 
 declare(strict_types=1);
@@ -53,7 +47,7 @@ if (!isset($_REQUEST['reset'])) {
     }
 
     // Print out whatever in the cache entry. This is the response that will be send to HTTP client.
-    echo $item->get(), "\n";
+    echo $item->get();
 
     // Send HTTP response back to the client first, then run background task(s).
     BackgroundProcessing::run();
