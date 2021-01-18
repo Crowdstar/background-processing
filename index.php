@@ -17,6 +17,8 @@
  *     curl -vi "http://127.0.0.1/"
  */
 
+declare(strict_types=1);
+
 use CrowdStar\BackgroundProcessing\BackgroundProcessing;
 use Symfony\Component\Cache\Simple\ApcuCache;
 
