@@ -13,6 +13,9 @@
 # Ignore file phpunit.xml
 /phpunit.xml
 
+# Ignore test output
+/.phplint-cache
+
 # Ignore Composer files
 /composer.lock
 /composer.phar

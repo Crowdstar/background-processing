@@ -1,0 +1,32 @@
+name: Tests
+
+on: [ push, pull_request, workflow_dispatch ]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        php: ["7.0", "7.1", "7.2", "7.3", "7.4"]
+
+    name: Tests Under PHP ${{ matrix.php }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Services
+        run: |
+          sed "s/%%PHP_VERSION%%/${{ matrix.php }}/g" Dockerfile.tpl > Dockerfile
+          docker-compose up -d
+
+      - name: Run Syntax Checks
+        if: matrix.php != '7.0'
+        run: docker run --rm -v "$(pwd):/project" -w /project -i jakzal/phpqa:php${{ matrix.php }} phplint src
+
+      - name: Run Unit Tests
+        run: docker exec -t $(docker ps -qf "name=php") bash -c "./vendor/bin/phpunit"
+
+      - name: Stop and Remove Docker Containers
+        run: docker-compose down
