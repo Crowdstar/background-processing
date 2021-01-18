@@ -28,7 +28,9 @@ previous request, since a lock may still be active while running background task
 # Installation
 
 ```bash
-composer require crowdstar/background-processing:~1.0.0
+composer require crowdstar/background-processing:~2.0.0 # Works under PHP 7.3 to PHP 8.0; Actively supported.
+# OR,
+composer require crowdstar/background-processing:~1.0.0 # Works under PHP 7.0 to PHP 8.0.
 ```
 
 # Sample Usage
