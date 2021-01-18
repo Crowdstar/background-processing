@@ -46,10 +46,9 @@ class BackgroundProcessing
 
     /**
      * @param bool $stopTiming Stop timing the current transaction or not before starting processing tasks in background
-     * @return void
      * @throws Exception
      */
-    public static function run(bool $stopTiming = false)
+    public static function run(bool $stopTiming = false): void
     {
         if (self::isInvoked()) {
             throw new Exception('background process invoked already');
@@ -77,47 +76,30 @@ class BackgroundProcessing
     /**
      * This method should only be called by test scripts (e.g., PHPUnit tests) to reset states of this class during
      * repetitive tests.
-     *
-     * @return void
      */
-    public static function reset()
+    public static function reset(): void
     {
         self::$closures = [];
         self::$invoked  = false;
     }
 
-    /**
-     * @param Closure $op
-     * @param array ...$params
-     * @return void
-     */
-    public static function add(Closure $op, ...$params)
+    public static function add(Closure $op, ...$params): void
     {
         self::$closures[] = function () use ($op, $params) {
             return $op(...$params);
         };
     }
 
-    /**
-     * @param AbstractTimer $timer
-     */
-    public static function addTimer(AbstractTimer $timer)
+    public static function addTimer(AbstractTimer $timer): void
     {
         self::$timers[] = $timer;
     }
 
-    /**
-     * @param bool $invoked
-     * @return void
-     */
-    protected static function setInvoked(bool $invoked)
+    protected static function setInvoked(bool $invoked): void
     {
         self::$invoked = $invoked;
     }
 
-    /**
-     * @return bool
-     */
     protected static function isInvoked(): bool
     {
         return self::$invoked;
