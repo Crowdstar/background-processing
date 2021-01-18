@@ -22,7 +22,6 @@ jobs:
           docker-compose up -d
 
       - name: Run Syntax Checks
-        if: matrix.php != '7.0'
         run: docker run --rm -v "$(pwd):/project" -w /project -i jakzal/phpqa:php${{ matrix.php }} phplint src
 
       - name: Run Unit Tests
