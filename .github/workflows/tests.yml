@@ -21,9 +21,6 @@ jobs:
           sed "s/%%PHP_VERSION%%/${{ matrix.php }}/g" Dockerfile.tpl > Dockerfile
           docker-compose up -d
 
-      - name: Run Syntax Checks
-        run: docker run --rm -v "$(pwd):/project" -w /project -i jakzal/phpqa:php${{ matrix.php }} phplint src
-
       - name: Run Unit Tests
         run: docker exec -t $(docker ps -qf "name=php") bash -c "./vendor/bin/phpunit"
 

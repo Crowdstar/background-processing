@@ -28,6 +28,8 @@ abstract class AbstractTimer
 {
     /**
      * Stop timing the current transaction before starting processing tasks in background.
+     *
+     * @return AbstractTimer
      */
     abstract public function stopTiming(): AbstractTimer;
 }
