@@ -6,7 +6,7 @@ jobs:
   ci:
     runs-on: ubuntu-22.04
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         php: ["7.3", "7.4", "8.0", "8.1", "8.2"]
 
@@ -18,11 +18,13 @@ jobs:
 
       - name: Setup Services
         run: |
+          set -ex
           sed "s/%%PHP_VERSION%%/${{ matrix.php }}/g" Dockerfile.tpl > Dockerfile
           docker-compose up -d
+          sleep 2 # Give the containers enough time to warm up before running unit tests.
 
       - name: Run Unit Tests
-        run: docker exec -t $(docker ps -qf "name=php") bash -c "./vendor/bin/phpunit"
+        run: docker compose exec -T php bash -c "./vendor/bin/phpunit"
 
       - name: Stop and Remove Docker Containers
         run: docker-compose down
