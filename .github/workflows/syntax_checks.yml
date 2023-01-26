@@ -18,7 +18,7 @@ jobs:
 
       - name: Run Syntax Checks
         run: |
-          if [ ${{ matrix.php }} == '7.0' ] ; then
+          if [[ ${{ matrix.php }} == '7.0' ]] || [[ ${{ matrix.php }} == '7.3' ]] ; then
             docker run --rm -v "$(pwd)/src:/data" -i cytopia/phplint:${{ matrix.php }}
           else
             docker run --rm -v "$(pwd):/project" -w /project -i jakzal/phpqa:php${{ matrix.php }} phplint src
