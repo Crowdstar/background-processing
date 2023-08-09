@@ -12,6 +12,7 @@
 
 # Ignore file phpunit.xml
 /phpunit.xml
+/.phpunit.result.cache
 
 # Ignore test output
 /.phplint-cache

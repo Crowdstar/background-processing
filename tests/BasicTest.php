@@ -17,10 +17,8 @@
 
 declare(strict_types=1);
 
-namespace CrowdStar\Tests\BackgroundProcessing;
+namespace CrowdStar\BackgroundProcessing;
 
-use CrowdStar\BackgroundProcessing\BackgroundProcessing;
-use CrowdStar\BackgroundProcessing\Exception;
 use PHPUnit\Framework\TestCase;
 
 /**

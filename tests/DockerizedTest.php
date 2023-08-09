@@ -17,9 +17,8 @@
 
 declare(strict_types=1);
 
-namespace CrowdStar\Tests\BackgroundProcessing;
+namespace CrowdStar\BackgroundProcessing;
 
-use CrowdStar\BackgroundProcessing\BackgroundProcessing;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;
 
