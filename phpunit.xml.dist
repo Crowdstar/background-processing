@@ -7,6 +7,6 @@
         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
   <coverage/>
   <testsuite name="default">
-    <directory suffix="Test.php">tests/CrowdStar</directory>
+    <directory suffix="Test.php">tests</directory>
   </testsuite>
 </phpunit>
