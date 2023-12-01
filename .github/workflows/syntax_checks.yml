@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ["7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1", "8.2"]
+        php: ["7.0", "7.1", "7.2", "7.3", "7.4", "8.0", "8.1", "8.2", "8.3"]
 
     name: PHP ${{ matrix.php }}
 
@@ -19,7 +19,7 @@ jobs:
       - name: Run Syntax Checks
         run: |
           if [[ ${{ matrix.php }} == '7.0' ]] || [[ ${{ matrix.php }} == '7.3' ]] ; then
-            docker run --rm -v "$(pwd)/src:/data" -i cytopia/phplint:${{ matrix.php }}
+            docker run -q --rm -v "$(pwd)/src:/data" -i cytopia/phplint:${{ matrix.php }}
           else
-            docker run --rm -v "$(pwd):/project" -w /project -i jakzal/phpqa:php${{ matrix.php }} phplint src
+            docker run -q --rm -v "$(pwd):/project" -w /project -i jakzal/phpqa:php${{ matrix.php }} phplint src
           fi

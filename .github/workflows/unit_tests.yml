@@ -20,7 +20,7 @@ jobs:
         run: |
           set -ex
           sed "s/%%PHP_VERSION%%/${{ matrix.php }}/g" Dockerfile.tpl > Dockerfile
-          docker-compose up -d
+          docker-compose up --quiet-pull -d
           sleep 2 # Give the containers enough time to warm up before running unit tests.
 
       - name: Run Unit Tests
