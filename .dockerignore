@@ -9,6 +9,7 @@
 
 # Ignore test output
 /.phplint-cache
+/.phplint.cache
 
 # Ignore Docker files
 /Dockerfile

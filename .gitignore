@@ -16,6 +16,7 @@
 
 # Ignore test output
 /.phplint-cache
+/.phplint.cache
 
 # Ignore Composer files
 /composer.lock

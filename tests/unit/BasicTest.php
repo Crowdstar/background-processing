@@ -53,7 +53,7 @@ class BasicTest extends TestCase
         BackgroundProcessing::reset();
     }
 
-    public function dataRun(): array
+    public static function dataRun(): array
     {
         $closure = function (int ...$params) {
             self::$counter += array_sum($params);
