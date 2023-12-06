@@ -17,13 +17,13 @@
 
 declare(strict_types=1);
 
-namespace CrowdStar\BackgroundProcessing;
+namespace CrowdStar\BackgroundProcessing\Exception;
 
 /**
  * Class Exception
  *
  * @package CrowdStar\BackgroundProcessing
  */
-class Exception extends \Exception
+class InvalidEnvironmentException extends \Exception
 {
 }

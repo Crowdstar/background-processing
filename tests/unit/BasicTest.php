@@ -19,6 +19,8 @@ declare(strict_types=1);
 
 namespace CrowdStar\BackgroundProcessing;
 
+use CrowdStar\BackgroundProcessing\Exception\AlreadyInvokedException;
+use CrowdStar\BackgroundProcessing\Exception\InvalidEnvironmentException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -97,7 +99,7 @@ class BasicTest extends TestCase
     /**
      * @dataProvider dataRun
      * @covers BackgroundProcessing::run()
-     * @throws \CrowdStar\BackgroundProcessing\Exception
+     * @throws AlreadyInvokedException|InvalidEnvironmentException
      */
     public function testRun(int $expected, array $closures, string $message): void
     {
@@ -113,7 +115,7 @@ class BasicTest extends TestCase
      */
     public function testRunWhenInvokedAlready(): void
     {
-        $this->expectException(Exception::class);
+        $this->expectException(AlreadyInvokedException::class);
         $this->expectExceptionMessage('background process invoked already');
 
         BackgroundProcessing::run();
