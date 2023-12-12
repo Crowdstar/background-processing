@@ -20,6 +20,8 @@ declare(strict_types=1);
 namespace CrowdStar\BackgroundProcessing;
 
 use Closure;
+use CrowdStar\BackgroundProcessing\Exception\AlreadyInvokedException;
+use CrowdStar\BackgroundProcessing\Exception\InvalidEnvironmentException;
 use CrowdStar\BackgroundProcessing\Timer\AbstractTimer;
 
 /**
@@ -47,17 +49,17 @@ class BackgroundProcessing
     /**
      * @param bool $stopTiming Stop timing the current transaction or not before starting processing tasks in background
      * @return void
-     * @throws Exception
+     * @throws AlreadyInvokedException|InvalidEnvironmentException
      */
     public static function run(bool $stopTiming = false)
     {
         if (self::isInvoked()) {
-            throw new Exception('background process invoked already');
+            throw new AlreadyInvokedException('background process invoked already');
         }
         self::setInvoked(true);
 
         if (!is_callable('fastcgi_finish_request')) {
-            throw new Exception('background process invokable under PHP-FPM only');
+            throw new InvalidEnvironmentException('background process invokable under PHP-FPM only');
         }
         session_write_close();
         fastcgi_finish_request();
