@@ -30,6 +30,9 @@ use PHPUnit\Framework\TestCase;
  */
 class DockerizedTest extends TestCase
 {
+    /**
+     * @return array<array<string, string>>
+     */
     public static function dataRun(): array
     {
         return [

@@ -90,7 +90,7 @@ class BackgroundProcessing
 
     /**
      * @param Closure $op
-     * @param array ...$params
+     * @param array<mixed> ...$params
      * @return void
      */
     public static function add(Closure $op, ...$params)

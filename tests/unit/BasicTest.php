@@ -55,6 +55,9 @@ class BasicTest extends TestCase
         BackgroundProcessing::reset();
     }
 
+    /**
+     * @return array<array<mixed>>
+     */
     public static function dataRun(): array
     {
         $closure = function (int ...$params) {
@@ -97,6 +100,7 @@ class BasicTest extends TestCase
     }
 
     /**
+     * @param array<array{0: \Closure, ?mixed}> $closures
      * @dataProvider dataRun
      * @covers BackgroundProcessing::run()
      * @throws AlreadyInvokedException|InvalidEnvironmentException
