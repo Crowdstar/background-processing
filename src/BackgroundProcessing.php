@@ -1,5 +1,5 @@
 <?php
-/**************************************************************************
+/**
  * Copyright 2018 Glu Mobile Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,26 +13,23 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *************************************************************************/
+ */
 
 declare(strict_types=1);
 
 namespace CrowdStar\BackgroundProcessing;
 
-use Closure;
 use CrowdStar\BackgroundProcessing\Exception\AlreadyInvokedException;
 use CrowdStar\BackgroundProcessing\Exception\InvalidEnvironmentException;
 use CrowdStar\BackgroundProcessing\Timer\AbstractTimer;
 
 /**
  * Class BackgroundProcessing
- *
- * @package CrowdStar\BackgroundProcessing
  */
 class BackgroundProcessing
 {
     /**
-     * @var Closure[]
+     * @var \Closure[]
      */
     protected static $closures = [];
 
@@ -89,11 +86,10 @@ class BackgroundProcessing
     }
 
     /**
-     * @param Closure $op
      * @param array<mixed> ...$params
      * @return void
      */
-    public static function add(Closure $op, ...$params)
+    public static function add(\Closure $op, ...$params)
     {
         self::$closures[] = function () use ($op, $params) {
             return $op(...$params);
@@ -101,7 +97,6 @@ class BackgroundProcessing
     }
 
     /**
-     * @param AbstractTimer $timer
      * @return void
      */
     public static function addTimer(AbstractTimer $timer)
@@ -110,7 +105,6 @@ class BackgroundProcessing
     }
 
     /**
-     * @param bool $invoked
      * @return void
      */
     protected static function setInvoked(bool $invoked)
@@ -118,9 +112,6 @@ class BackgroundProcessing
         self::$invoked = $invoked;
     }
 
-    /**
-     * @return bool
-     */
     protected static function isInvoked(): bool
     {
         return self::$invoked;

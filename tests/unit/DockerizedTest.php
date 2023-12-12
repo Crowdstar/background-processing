@@ -1,5 +1,5 @@
 <?php
-/**************************************************************************
+/**
  * Copyright 2018 Glu Mobile Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *************************************************************************/
+ */
 
 declare(strict_types=1);
 
@@ -25,8 +25,9 @@ use PHPUnit\Framework\TestCase;
 /**
  * Class DockerizedTest
  *
- * @package CrowdStar\Tests\BackgroundProcessing
  * @group dockerized
+ * @internal
+ * @coversNothing
  */
 class DockerizedTest extends TestCase
 {
@@ -39,37 +40,37 @@ class DockerizedTest extends TestCase
             [
                 'expectedHttpResponse' => '',
                 'expectedFinalValue'   => '',
-                'start' => '0',
-                'end'   => '0',
-                'desc'  => 'Start and end value are empty (string "0"); cached value is always an empty string.',
+                'start'                => '0',
+                'end'                  => '0',
+                'desc'                 => 'Start and end value are empty (string "0"); cached value is always an empty string.',
             ],
             [
                 'expectedHttpResponse' => '',
                 'expectedFinalValue'   => '1',
-                'start' => '0',
-                'end'   => '1',
-                'desc'  => 'Start value is empty ("0") but end value is "1"; cached value is updated accordingly.',
+                'start'                => '0',
+                'end'                  => '1',
+                'desc'                 => 'Start value is empty ("0") but end value is "1"; cached value is updated accordingly.',
             ],
             [
                 'expectedHttpResponse' => '1',
                 'expectedFinalValue'   => '1',
-                'start' => '1',
-                'end'   => '0',
-                'desc'  => 'Start value is "1" but end value is empty (string "0"); cached value is not updated.',
+                'start'                => '1',
+                'end'                  => '0',
+                'desc'                 => 'Start value is "1" but end value is empty (string "0"); cached value is not updated.',
             ],
             [
                 'expectedHttpResponse' => '1',
                 'expectedFinalValue'   => '2',
-                'start' => '1',
-                'end'   => '2',
-                'desc'  => 'Start value is "1" but end value is "2"; cached value is updated accordingly.',
+                'start'                => '1',
+                'end'                  => '2',
+                'desc'                 => 'Start value is "1" but end value is "2"; cached value is updated accordingly.',
             ],
         ];
     }
 
     /**
      * @dataProvider dataRun
-     * @covers BackgroundProcessing::run()
+     * @covers \CrowdStar\BackgroundProcessing\BackgroundProcessing::run()
      */
     public function testRun(string $expectedHttpResponse, string $expectedFinalValue, string $start, string $end): void
     {

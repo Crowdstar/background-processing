@@ -1,5 +1,5 @@
 <?php
-/**************************************************************************
+/**
  * Copyright 2018 Glu Mobile Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *************************************************************************/
+ */
 
 declare(strict_types=1);
 
@@ -26,7 +26,8 @@ use PHPUnit\Framework\TestCase;
 /**
  * Class BasicTest
  *
- * @package CrowdStar\Tests\BackgroundProcessing
+ * @internal
+ * @coversNothing
  */
 class BasicTest extends TestCase
 {
@@ -36,7 +37,7 @@ class BasicTest extends TestCase
     protected static $counter = 0;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function tearDownAfterClass(): void
     {
@@ -46,7 +47,7 @@ class BasicTest extends TestCase
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setUp(): void
     {
@@ -102,7 +103,7 @@ class BasicTest extends TestCase
     /**
      * @param array<array{0: \Closure, ?mixed}> $closures
      * @dataProvider dataRun
-     * @covers BackgroundProcessing::run()
+     * @covers \CrowdStar\BackgroundProcessing\BackgroundProcessing::run()
      * @throws AlreadyInvokedException|InvalidEnvironmentException
      */
     public function testRun(int $expected, array $closures, string $message): void
@@ -115,7 +116,7 @@ class BasicTest extends TestCase
     }
 
     /**
-     * @covers BackgroundProcessing::run()
+     * @covers \CrowdStar\BackgroundProcessing\BackgroundProcessing::run()
      */
     public function testRunWhenInvokedAlready(): void
     {
