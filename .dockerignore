@@ -11,6 +11,9 @@
 /.phplint-cache
 /.phplint.cache
 
+# Ignore PHPStan files.
+/phpstan.neon
+
 # Ignore Docker files
 /Dockerfile
 /Dockerfile.tpl

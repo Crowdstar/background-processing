@@ -18,6 +18,9 @@
 /.phplint-cache
 /.phplint.cache
 
+# Ignore PHPStan files.
+/phpstan.neon
+
 # Ignore Composer files
 /composer.lock
 /composer.phar

@@ -1,3 +1,8 @@
+# 1.0.2 (2023-12-12)
+
+## Changed
+- Throw unique exceptions instead of general ones. ( PR #1 by @daniel-glu )
+
 # 1.0.1 (2019-01-14)
 
 ## Added

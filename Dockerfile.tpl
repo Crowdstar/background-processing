@@ -1,6 +1,7 @@
 FROM php:%%PHP_VERSION%%-fpm
 
 COPY . /var/www/html
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/
 
 RUN \
     apt-get update     && \
@@ -10,5 +11,4 @@ RUN \
     docker-php-ext-install zip && \
     yes '' | pecl install apcu && \
     docker-php-ext-enable apcu && \
-    curl -sfL http://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer && \
     composer update -nq --no-progress
