@@ -18,7 +18,7 @@ jobs:
           coverage: none
 
       - name: Install PHPStan
-        uses: nick-invision/retry@v2
+        uses: nick-invision/retry@v3
         with:
           timeout_minutes: 5
           max_attempts: 5
