@@ -1,4 +1,4 @@
-name: Tests
+name: Unit Tests
 
 on: [ push, pull_request, workflow_dispatch ]
 
@@ -16,15 +16,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Services
-        run: |
-          set -ex
-          sed "s/%%PHP_VERSION%%/${{ matrix.php }}/g" Dockerfile.tpl > Dockerfile
-          docker-compose up --quiet-pull -d
-          sleep 2 # Give the containers enough time to warm up before running unit tests.
+      - name: Customize Dockerfile
+        run: sed "s/%%PHP_VERSION%%/${{ matrix.php }}/g" Dockerfile.tpl > Dockerfile
+
+      - name: Start Docker Containers
+        uses: isbang/compose-action@v2.0.0
 
       - name: Run Unit Tests
-        run: docker compose exec -T php bash -c "./vendor/bin/phpunit"
-
-      - name: Stop and Remove Docker Containers
-        run: docker-compose down
+        run: |
+          set -ex
+          sleep 2 # Give the containers enough time to warm up before running unit tests.
+          docker compose exec -T php bash -c "./vendor/bin/phpunit"
