@@ -56,11 +56,11 @@ class BackgroundProcessing
         }
         self::setInvoked(true);
 
-        if (!is_callable('fastcgi_finish_request')) {
+        if (!is_callable('fastcgi_finish_request')) { // @phpstan-ignore function.alreadyNarrowedType
             throw new InvalidEnvironmentException('background process invokable under PHP-FPM only');
         }
         session_write_close();
-        fastcgi_finish_request();
+        fastcgi_finish_request(); // @phpstan-ignore function.resultUnused
 
         if ($stopTiming) {
             // Stop timing the current transaction before starting processing tasks in background.
