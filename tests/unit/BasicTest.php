@@ -58,6 +58,21 @@ class BasicTest extends TestCase
     }
 
     /**
+     * @param array<array{0: \Closure, ?mixed}> $closures
+     * @dataProvider dataRun
+     * @covers \CrowdStar\BackgroundProcessing\BackgroundProcessing::run()
+     * @throws AlreadyInvokedException|InvalidEnvironmentException
+     */
+    public function testRun(int $expected, array $closures, string $message): void
+    {
+        foreach ($closures as $closure) {
+            BackgroundProcessing::add(...$closure);
+        }
+        BackgroundProcessing::run();
+        $this->assertSame($expected, self::$counter, $message);
+    }
+
+    /**
      * @return array<array<mixed>>
      */
     public static function dataRun(): array
@@ -99,21 +114,6 @@ class BasicTest extends TestCase
                 '0 + (0 + (1 + 2 + 4) + 8) = 15',
             ],
         ];
-    }
-
-    /**
-     * @param array<array{0: \Closure, ?mixed}> $closures
-     * @dataProvider dataRun
-     * @covers \CrowdStar\BackgroundProcessing\BackgroundProcessing::run()
-     * @throws AlreadyInvokedException|InvalidEnvironmentException
-     */
-    public function testRun(int $expected, array $closures, string $message): void
-    {
-        foreach ($closures as $closure) {
-            BackgroundProcessing::add(...$closure);
-        }
-        BackgroundProcessing::run();
-        $this->assertSame($expected, self::$counter, $message);
     }
 
     /**

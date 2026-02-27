@@ -33,6 +33,27 @@ use PHPUnit\Framework\TestCase;
 class DockerizedTest extends TestCase
 {
     /**
+     * @dataProvider dataRun
+     * @covers \CrowdStar\BackgroundProcessing\BackgroundProcessing::run()
+     */
+    public function testRun(string $expectedHttpResponse, string $expectedFinalValue, string $start, string $end): void
+    {
+        $client = new Client(['base_uri' => 'http://web']);
+        $client->get('/', ['query' => ['reset' => true]]); // Wipe cached data.
+
+        $this->assertSame(
+            $expectedHttpResponse,
+            (string) $client->get('/', ['query' => ['start' => $start, 'end' => $end]])->getBody(),
+            "HTTP response should be {$expectedHttpResponse} while final value in APCu should be {$expectedFinalValue}"
+        );
+        $this->assertSame(
+            $expectedFinalValue,
+            (string) $client->get('/')->getBody(),
+            "Final value in APCu should be {$expectedFinalValue} while HTTP response should be {$expectedHttpResponse}"
+        );
+    }
+
+    /**
      * @return array<array<string, string>>
      */
     public static function dataRun(): array
@@ -67,26 +88,5 @@ class DockerizedTest extends TestCase
                 'desc'                 => 'Start value is "1" but end value is "2"; cached value is updated accordingly.',
             ],
         ];
-    }
-
-    /**
-     * @dataProvider dataRun
-     * @covers \CrowdStar\BackgroundProcessing\BackgroundProcessing::run()
-     */
-    public function testRun(string $expectedHttpResponse, string $expectedFinalValue, string $start, string $end): void
-    {
-        $client = new Client(['base_uri' => 'http://web']);
-        $client->get('/', ['query' => ['reset' => true]]); // Wipe cached data.
-
-        $this->assertSame(
-            $expectedHttpResponse,
-            (string) $client->get('/', ['query' => ['start' => $start, 'end' => $end]])->getBody(),
-            "HTTP response should be {$expectedHttpResponse} while final value in APCu should be {$expectedFinalValue}"
-        );
-        $this->assertSame(
-            $expectedFinalValue,
-            (string) $client->get('/')->getBody(),
-            "Final value in APCu should be {$expectedFinalValue} while HTTP response should be {$expectedHttpResponse}"
-        );
     }
 }
