@@ -1,4 +1,6 @@
-FROM php:%%PHP_VERSION%%-fpm
+ARG PHP_VERSION=8.5
+
+FROM php:${PHP_VERSION}-fpm
 
 COPY . /var/www/html
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/

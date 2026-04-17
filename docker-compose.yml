@@ -7,7 +7,9 @@ services:
         links:
             - php
     php:
-        build: .
+        build:
+            args:
+                PHP_VERSION: ${PHP_VERSION:-8.5}
         volumes:
             # The container works fine without this volume. However, adding this volume allows us to update the PHP
             # script for testing purpose while the Docker instances are running.

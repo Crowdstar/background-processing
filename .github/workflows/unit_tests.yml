@@ -14,13 +14,14 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Customize Dockerfile
-        run: sed "s/%%PHP_VERSION%%/${{ matrix.php }}/g" Dockerfile.tpl > Dockerfile
+        uses: actions/checkout@v6
 
       - name: Start Docker Containers
-        uses: isbang/compose-action@v2.0.0
+        uses: hoverkraft-tech/compose-action@v2.0.0
+        with:
+          up-flags: --build
+        env:
+          PHP_VERSION: ${{ matrix.php }}
 
       - name: Run Unit Tests
         run: |
