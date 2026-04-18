@@ -23,6 +23,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2
+          coverage: none
+
+      - name: Install Composer Dependencies
+        uses: nick-invision/retry@v4
+        with:
+          timeout_minutes: 5
+          max_attempts: 5
+          command: COMPOSER_NO_AUDIT=1 composer update -nq --no-progress
+
       - name: Start Docker Containers
         uses: hoverkraft-tech/compose-action@v2
         with:

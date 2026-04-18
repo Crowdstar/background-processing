@@ -11,8 +11,4 @@ services:
             args:
                 PHP_VERSION: ${PHP_VERSION:-8.5}
         volumes:
-            # The container works fine without this volume. However, adding this volume allows us to update the PHP
-            # script for testing purpose while the Docker instances are running.
-            - ./index.php:/var/www/html/index.php
-            - ./src:/var/www/html/src
-            - ./tests:/var/www/html/tests
+            - .:/var/www/html

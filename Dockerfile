@@ -12,5 +12,4 @@ RUN \
         libzip-dev     && \
     docker-php-ext-install zip && \
     yes '' | pecl install apcu && \
-    docker-php-ext-enable apcu && \
-    COMPOSER_NO_AUDIT=1 composer update -nq --no-progress
+    docker-php-ext-enable apcu
