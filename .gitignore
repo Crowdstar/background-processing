@@ -3,6 +3,7 @@
 
 # Ignore file phpunit.xml
 /phpunit.xml
+/.phpunit.cache
 /.phpunit.result.cache
 
 # Ignore test output
