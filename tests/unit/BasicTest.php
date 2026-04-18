@@ -69,7 +69,7 @@ class BasicTest extends TestCase
             BackgroundProcessing::add(...$closure);
         }
         BackgroundProcessing::run();
-        $this->assertSame($expected, self::$counter, $message);
+        self::assertSame($expected, self::$counter, $message);
     }
 
     /**

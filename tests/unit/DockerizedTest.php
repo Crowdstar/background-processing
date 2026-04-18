@@ -59,33 +59,36 @@ class DockerizedTest extends TestCase
     public static function dataRun(): array
     {
         return [
+            // Start and end value are empty (string "0"); cached value is always an empty string.
             [
                 'expectedHttpResponse' => '',
                 'expectedFinalValue'   => '',
                 'start'                => '0',
                 'end'                  => '0',
-                'desc'                 => 'Start and end value are empty (string "0"); cached value is always an empty string.',
             ],
+
+            // Start value is empty ("0") but end value is "1"; cached value is updated accordingly.
             [
                 'expectedHttpResponse' => '',
                 'expectedFinalValue'   => '1',
                 'start'                => '0',
                 'end'                  => '1',
-                'desc'                 => 'Start value is empty ("0") but end value is "1"; cached value is updated accordingly.',
             ],
+
+            // Start value is "1" but end value is empty (string "0"); cached value is not updated.
             [
                 'expectedHttpResponse' => '1',
                 'expectedFinalValue'   => '1',
                 'start'                => '1',
                 'end'                  => '0',
-                'desc'                 => 'Start value is "1" but end value is empty (string "0"); cached value is not updated.',
             ],
+
+            // Start value is "1" but end value is "2"; cached value is updated accordingly.
             [
                 'expectedHttpResponse' => '1',
                 'expectedFinalValue'   => '2',
                 'start'                => '1',
                 'end'                  => '2',
-                'desc'                 => 'Start value is "1" but end value is "2"; cached value is updated accordingly.',
             ],
         ];
     }

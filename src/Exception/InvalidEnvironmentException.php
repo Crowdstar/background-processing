@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace CrowdStar\BackgroundProcessing\Exception;
 
 /**
- * Class Exception
+ * Class InvalidEnvironmentException
  */
 class InvalidEnvironmentException extends \Exception
 {
