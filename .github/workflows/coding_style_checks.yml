@@ -2,6 +2,13 @@ name: Coding Style Checks
 
 on: [ push, pull_request, workflow_dispatch ]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   ci:
     runs-on: ubuntu-24.04

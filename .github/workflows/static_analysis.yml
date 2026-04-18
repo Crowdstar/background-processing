@@ -2,6 +2,13 @@ name: Static Analysis
 
 on: [ push, pull_request, workflow_dispatch ]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   static-analysis:
     runs-on: ubuntu-24.04
@@ -22,7 +29,7 @@ jobs:
         with:
           timeout_minutes: 5
           max_attempts: 5
-          command: composer require phpstan/phpstan=~2.0 -n -q --no-progress
+          command: COMPOSER_NO_AUDIT=1 composer require phpstan/phpstan=~2.0 -n -q --no-progress
 
       - name: Run Static Analysis
         run: ./vendor/bin/phpstan analyse --no-progress --memory-limit 2G
