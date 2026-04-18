@@ -22,6 +22,7 @@ namespace CrowdStar\BackgroundProcessing;
 
 use CrowdStar\BackgroundProcessing\Exception\AlreadyInvokedException;
 use CrowdStar\BackgroundProcessing\Exception\InvalidEnvironmentException;
+use CrowdStar\Reflection\Reflection;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -40,21 +41,16 @@ class BasicTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public static function tearDownAfterClass(): void
-    {
-        self::$counter = 0;
-        BackgroundProcessing::reset();
-        parent::tearDownAfterClass();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setUp(): void
     {
         parent::setUp();
+
         self::$counter = 0;
-        BackgroundProcessing::reset();
+
+        // Reset states of class BackgroundProcessing to make sure that each test is independent and does not affect others.
+        Reflection::setProperty(BackgroundProcessing::class, 'closures', []);
+        Reflection::setProperty(BackgroundProcessing::class, 'timers', []);
+        Reflection::setProperty(BackgroundProcessing::class, 'invoked', false);
     }
 
     /**
@@ -126,5 +122,31 @@ class BasicTest extends TestCase
 
         BackgroundProcessing::run();
         BackgroundProcessing::run();
+    }
+
+    /**
+     * Verify that timers do not have stopTiming() called when $stopTiming is false (the default).
+     *
+     * @covers \CrowdStar\BackgroundProcessing\BackgroundProcessing::run()
+     */
+    public function testTimerIsNotCalledWhenStopTimingIsFalse(): void
+    {
+        $timer = new \MockedTimer();
+        BackgroundProcessing::addTimer($timer);
+        BackgroundProcessing::run();
+        self::assertFalse($timer->wasCalled, 'Method AbstractTimer::stopTiming() should not be called when $stopTiming is false');
+    }
+
+    /**
+     * Verify that timers have stopTiming() called when $stopTiming is true.
+     *
+     * @covers \CrowdStar\BackgroundProcessing\BackgroundProcessing::run()
+     */
+    public function testTimerIsCalledWhenStopTimingIsTrue(): void
+    {
+        $timer = new \MockedTimer();
+        BackgroundProcessing::addTimer($timer);
+        BackgroundProcessing::run(true);
+        self::assertTrue($timer->wasCalled, 'Method AbstractTimer::stopTiming() should be called when $stopTiming is true');
     }
 }

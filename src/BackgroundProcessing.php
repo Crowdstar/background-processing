@@ -75,18 +75,6 @@ class BackgroundProcessing
     }
 
     /**
-     * This method should only be called by test scripts (e.g., PHPUnit tests) to reset states of this class during
-     * repetitive tests.
-     *
-     * @return void
-     */
-    public static function reset()
-    {
-        self::$closures = [];
-        self::$invoked  = false;
-    }
-
-    /**
      * @param array<mixed> ...$params
      * @return void
      */

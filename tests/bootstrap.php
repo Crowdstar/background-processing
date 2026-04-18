@@ -18,6 +18,8 @@
 
 declare(strict_types=1);
 
+use CrowdStar\BackgroundProcessing\Timer\AbstractTimer;
+
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
@@ -29,4 +31,20 @@ ini_set('display_startup_errors', '1');
 function fastcgi_finish_request()
 {
     return true;
+}
+
+class MockedTimer extends AbstractTimer
+{
+    /** @var bool */
+    public $wasCalled = false;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function stopTiming(): AbstractTimer
+    {
+        $this->wasCalled = true;
+
+        return $this;
+    }
 }
