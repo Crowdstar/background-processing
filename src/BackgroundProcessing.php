@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace CrowdStar\BackgroundProcessing;
 
 use CrowdStar\BackgroundProcessing\Exception\AlreadyInvokedException;
+use CrowdStar\BackgroundProcessing\Exception\BackgroundProcessingFailedException;
 use CrowdStar\BackgroundProcessing\Exception\InvalidEnvironmentException;
 use CrowdStar\BackgroundProcessing\Timer\AbstractTimer;
 
@@ -29,6 +30,17 @@ use CrowdStar\BackgroundProcessing\Timer\AbstractTimer;
  */
 class BackgroundProcessing
 {
+    /**
+     * Stop execution immediately when a closure throws an exception. The exception is thrown as-is.
+     */
+    const EXECUTION_TYPE_STOP_ON_ERROR = 0;
+
+    /**
+     * Continue executing remaining closures when one throws an exception. After all closures have been executed, a
+     * BackgroundProcessingFailedException is thrown containing all collected exceptions.
+     */
+    const EXECUTION_TYPE_CONTINUE_ON_ERROR = 1;
+
     /**
      * @var \Closure[]
      */
@@ -45,9 +57,14 @@ class BackgroundProcessing
     protected static $invoked = false;
 
     /**
+     * @var int
+     */
+    protected static $executionType = self::EXECUTION_TYPE_STOP_ON_ERROR;
+
+    /**
      * @param bool $stopTiming Stop timing the current transaction or not before starting processing tasks in background
      * @return void
-     * @throws AlreadyInvokedException|InvalidEnvironmentException
+     * @throws AlreadyInvokedException|InvalidEnvironmentException|BackgroundProcessingFailedException|\Throwable
      */
     public static function run(bool $stopTiming = false)
     {
@@ -71,8 +88,22 @@ class BackgroundProcessing
             }
         }
 
-        foreach (self::$closures as $closure) {
-            $closure();
+        if (self::$executionType === self::EXECUTION_TYPE_STOP_ON_ERROR) {
+            foreach (self::$closures as $closure) {
+                $closure();
+            }
+        } else {
+            $exceptions = [];
+            foreach (self::$closures as $closure) {
+                try {
+                    $closure();
+                } catch (\Throwable $e) {
+                    $exceptions[] = $e;
+                }
+            }
+            if (!empty($exceptions)) {
+                throw new BackgroundProcessingFailedException($exceptions);
+            }
         }
     }
 
@@ -93,6 +124,19 @@ class BackgroundProcessing
     public static function addTimer(AbstractTimer $timer)
     {
         self::$timers[] = $timer;
+    }
+
+    /**
+     * @return void
+     */
+    public static function setExecutionType(int $executionType)
+    {
+        self::$executionType = $executionType;
+    }
+
+    public static function getExecutionType(): int
+    {
+        return self::$executionType;
     }
 
     /**
