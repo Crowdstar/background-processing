@@ -71,6 +71,77 @@ echo "This message won't shown up in HTTP response.";
 ?>
 ```
 
+# Error Handling
+
+By default, if a background task throws an exception, execution stops immediately and subsequent tasks will not run.
+You can change this behavior using the execution type setting.
+
+## Stop on Error (Default)
+
+This is the default behavior. When a closure throws an exception, it propagates immediately and remaining closures are
+skipped.
+
+```php
+<?php
+use CrowdStar\BackgroundProcessing\BackgroundProcessing;
+
+BackgroundProcessing::add(function () {
+    // This runs.
+    sendEmail('user@example.com', 'Order confirmed');
+});
+BackgroundProcessing::add(function () {
+    // This throws an exception.
+    throw new \RuntimeException('Analytics service unavailable');
+});
+BackgroundProcessing::add(function () {
+    // This will NOT run because the previous task failed.
+    updateSearchIndex();
+});
+
+BackgroundProcessing::run(); // The RuntimeException is thrown here.
+?>
+```
+
+## Continue on Error
+
+In this mode, all closures are executed regardless of failures. After all closures have finished, if any threw
+exceptions, a single `BackgroundProcessingFailedException` is thrown containing all collected exceptions.
+
+```php
+<?php
+use CrowdStar\BackgroundProcessing\BackgroundProcessing;
+use CrowdStar\BackgroundProcessing\Exception\BackgroundProcessingFailedException;
+
+BackgroundProcessing::add(function () {
+    sendEmail('user@example.com', 'Order confirmed');
+});
+BackgroundProcessing::add(function () {
+    // This fails, but the next task still runs.
+    throw new \RuntimeException('Analytics service unavailable');
+});
+BackgroundProcessing::add(function () {
+    // This runs even though the previous task failed.
+    updateSearchIndex();
+});
+
+BackgroundProcessing::setExecutionType(BackgroundProcessing::EXECUTION_TYPE_CONTINUE_ON_ERROR);
+try {
+    BackgroundProcessing::run();
+} catch (BackgroundProcessingFailedException $e) {
+    // $e->getMessage() returns e.g. "1 background processing task(s) failed"
+    foreach ($e->getExceptions() as $exception) {
+        error_log($exception->getMessage());
+    }
+}
+?>
+```
+
+The `BackgroundProcessingFailedException` provides:
+
+* `getMessage()` — a summary like "2 background processing task(s) failed"
+* `getExceptions()` — an array of all `\Throwable` instances caught during execution
+* `getPrevious()` — the first exception in the list, for standard PHP exception chain traversal
+
 # Integration Guides
 
 ## Integrate with Symfony
