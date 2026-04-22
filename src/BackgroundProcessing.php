@@ -56,7 +56,7 @@ class BackgroundProcessing
         }
         self::setInvoked(true);
 
-        if (!is_callable('fastcgi_finish_request')) { // @phpstan-ignore function.alreadyNarrowedType
+        if (!function_exists('fastcgi_finish_request')) {
             throw new InvalidEnvironmentException('background process invokable under PHP-FPM only');
         }
         if (session_status() === PHP_SESSION_ACTIVE) {
